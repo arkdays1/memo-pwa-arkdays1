@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">memo-pwa</string>
+    <string name="title_activity_main">memo-pwa</string>
+    <string name="package_name">com.arkdays1.memo</string>
+    <string name="custom_url_scheme">com.arkdays1.memo</string>
+</resources>
