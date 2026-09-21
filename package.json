@@ -10,12 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@capacitor/android": "^8.5.2",
     "@capacitor/cli": "^8.5.2",
     "@capacitor/core": "^8.5.2",
-=======
->>>>>>> 9b53733c5f5011185310f88b4298cf759c769aae
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
