@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { loadMemos, saveMemos } from './storage'
 
 function newId() {
-  // 现代浏览器支持 crypto.randomUUID()
   if (crypto?.randomUUID) return crypto.randomUUID()
   return String(Date.now()) + '-' + Math.random().toString(16).slice(2)
 }
@@ -28,12 +27,11 @@ function snippet(content) {
 export default function App() {
   const [memos, setMemos] = useState(() => {
     const stored = loadMemos()
-    // 第一次打开给两条示例，方便你确认 UI 正常；你也可以删掉这段
     if (stored.length === 0) {
       const now = Date.now()
       const seed = [
-        { id: newId(), title: '欢迎', content: '这是一个本地备忘录（无同步）。\n点击新建开始记录。', createdAt: now, updatedAt: now },
-        { id: newId(), title: '小提示', content: '手机上访问开发地址后，可以“添加到主屏幕”。', createdAt: now - 60000, updatedAt: now - 60000 },
+        { id: newId(), title: '欢迎', content: '这是一个本地备忘录（无同步）。\n点击右下角 + 新建。', createdAt: now, updatedAt: now },
+        { id: newId(), title: '小提示', content: '亮色玻璃风（磨砂效果取决于系统/浏览器支持）。', createdAt: now - 60000, updatedAt: now - 60000 },
       ]
       saveMemos(seed)
       return seed
@@ -45,7 +43,6 @@ export default function App() {
   const [screen, setScreen] = useState('list') // 'list' | 'edit'
   const [activeId, setActiveId] = useState(null)
 
-  // 持久化：任何变更都存到 localStorage
   useEffect(() => {
     saveMemos(memos)
   }, [memos])
@@ -106,14 +103,14 @@ export default function App() {
   }
 
   return (
-    <div className="app">
+    <div className="app" data-screen={screen}>
       <header className="topbar">
         <div className="brand">备忘录</div>
-        {screen === 'list' ? (
-          <button className="primary" onClick={goNew}>新建</button>
-        ) : (
+
+        {/* 首页不再显示“新建”，只在编辑页显示返回 */}
+        {screen === 'edit' ? (
           <button className="ghost" onClick={backToList}>返回</button>
-        )}
+        ) : null}
       </header>
 
       {screen === 'list' ? (
@@ -130,7 +127,7 @@ export default function App() {
           {filteredMemos.length === 0 ? (
             <div className="empty">
               <div className="emptyTitle">没有匹配的备忘录</div>
-              <div className="emptySub">试试换个关键词，或点击右上角新建。</div>
+              <div className="emptySub">试试换个关键词，或点击右下角 + 新建。</div>
             </div>
           ) : (
             <ul className="list">
@@ -146,6 +143,8 @@ export default function App() {
               ))}
             </ul>
           )}
+
+          <button className="fab" onClick={goNew} aria-label="新建备忘录">+</button>
         </div>
       ) : (
         <div className="panel">
